@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Management System</title>
+
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin:0; padding:0; }
+    header { background: #1e90ff; color: white; text-align: center; padding: 20px; }
+    section { padding: 20px; max-width: 600px; margin: auto; }
+    input, button { padding: 10px;margin: 5px 0 ;width: 100% ; }
+    table {width: 100%	 ; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background: #1e90ff; color: white; }
+    .btn-delete { background: red; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Student Management System</h1>
+</header>
+
+<section id="login-section">
+  <h2>Login</h2>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <p id="login-msg" style="color:red;"></p>
+</section>
+
+<section id="main-section" style="display:none;">
+  <h2>Add Student</h2>
+  <input type="text" id="name" placeholder="Name">
+  <input type="number" id="age" placeholder="Age">
+  <input type="text" id="class" placeholder="Class">
+  <button onclick="addStudent()">Add Student</button>
+
+  <h2>Students List</h2>
+  <table id="students-table">
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Class</th>
+      <th>Action</th>
+    </tr>
+  </table>
+</section>
+<script>
+  // Simple login
+  function login() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+    if(user === "admin" && pass === "1234") {
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('main-section').style.display = 'block';
+    } else {
+      document.getElementById('login-msg').innerText = "Invalid credentials";
+    }
+  }
+
+  // Array to store students
+  let students = [];
+
+  function addStudent() {
+    const name = document.getElementById('name').value;
+    const age = document.getElementById('age').value;
+    const cls = document.getElementById('class').value;
+
+    if(name && age && cls) {
+      const student = {name, age, cls};
+      students.push(student);
+      displayStudents();
+      document.getElementById('name').value = '';
+      document.getElementById('age').value = '';
+      document.getElementById('class').value = '';
+    } else {
+      alert("Please fill all fields");
+    }
+  }
+
+  function displayStudents() {
+    const table = document.getElementById('students-table');
+    table.innerHTML = `
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Class</th>
+        <th>Action</th>
+      </tr>`;
+    students.forEach((s, index) => {
+      const row = table.insertRow();
+      row.innerHTML = `
+        <td>${s.name}</td>
+        <td>${s.age}</td>
+        <td>${s.cls}</td>
+        <td><button class="btn-delete" onclick="deleteStudent(${index})">Delete</button></td>
+      `;
+    });
+  }
+
+  function deleteStudent(index) {
+    students.splice(index, 1);
+    displayStudents();
+  }p
+</script>
+
+</body>
+</html>
